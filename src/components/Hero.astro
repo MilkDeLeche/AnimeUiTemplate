@@ -1,0 +1,315 @@
+---
+import { menuCards, portfolioStats, quickActions, themes } from "../data/templateContent";
+---
+
+<main class="hero-shell" data-theme="academy" data-theme-ids={themes.map((theme) => theme.id).join(",")}>
+  <div class="loading-sequence" data-loader aria-label="Loading portfolio">
+    <div class="loader-cut"></div>
+    <div class="loader-slash slash-a"></div>
+    <div class="loader-slash slash-b"></div>
+    <div class="loader-slash slash-c"></div>
+    <div class="loader-card">
+      <span>Portfolio</span>
+      <strong>Now Loading</strong>
+    </div>
+    <div class="loader-dots" aria-hidden="true">
+      <span></span>
+      <span></span>
+      <span></span>
+    </div>
+  </div>
+
+  <section class="hero" aria-label="Portfolio template hero">
+    <video
+      class="hero-art"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="/assets/anime-rooftop-hero.png"
+      aria-label="Animated portfolio hero artwork"
+    >
+      <source src="/assets/hero-background.mp4" type="video/mp4" />
+    </video>
+    <video
+      class="theme-art"
+      data-theme-bg="neon"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="/assets/themes/neon-midnight.png"
+      aria-hidden="true"
+    >
+      <source src="/assets/themes/neon-midnight.mp4" type="video/mp4" />
+    </video>
+    <video
+      class="theme-art"
+      data-theme-bg="sakura"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="/assets/themes/sakura-dawn.png"
+      aria-hidden="true"
+    >
+      <source src="/assets/themes/sakura-dawn.mp4" type="video/mp4" />
+    </video>
+    <video
+      class="theme-art"
+      data-theme-bg="violet"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="/assets/themes/violet-arcade.png"
+      aria-hidden="true"
+    >
+      <source src="/assets/themes/violet-arcade.mp4" type="video/mp4" />
+    </video>
+    <video
+      class="theme-art"
+      data-theme-bg="solar"
+      autoplay
+      muted
+      loop
+      playsinline
+      preload="metadata"
+      poster="/assets/themes/solar-pop.png"
+      aria-hidden="true"
+    >
+      <source src="/assets/themes/solar-pop.mp4" type="video/mp4" />
+    </video>
+    <div class="sky-wash"></div>
+    <div class="screen-vignette"></div>
+
+    <header class="top-hud" aria-label="Portfolio highlights">
+      <div class="level-badge">
+        <span>Creator</span>
+        <strong>Lv. Pro</strong>
+      </div>
+
+      <nav class="quick-nav" aria-label="Quick actions">
+        {
+          quickActions.map((action) => (
+            <button aria-label={action.aria} data-sfx="hover">
+              <span class={`icon ${action.icon}`}></span>
+              {action.label}
+            </button>
+          ))
+        }
+      </nav>
+
+      <div class="resources" aria-label="Portfolio stats">
+        {
+          portfolioStats.map((resource) => (
+            <div>
+              <span class={resource.icon}></span>
+              <small>{resource.label}</small>
+              <strong>{resource.value}</strong>
+            </div>
+          ))
+        }
+      </div>
+
+      <div class="message-actions" aria-label="Messages">
+        <button aria-label="Chat" data-sfx="hover"></button>
+        <button aria-label="Randomize template theme" data-randomize-theme data-sfx="start"></button>
+      </div>
+    </header>
+
+    <section class="menu-cluster" aria-label="Portfolio menu">
+      <h1>MENU</h1>
+      <div class="panel-grid">
+        {
+          menuCards.map((card) => (
+            <a
+              class={`menu-card ${card.className}`}
+              href={card.href}
+              data-sfx="panel"
+              style={`--card-image: url('${card.image}')`}
+            >
+              {card.alert && <span class="alert">!</span>}
+              <small>{card.eyebrow}</small>
+              <strong>{card.title}</strong>
+            </a>
+          ))
+        }
+      </div>
+    </section>
+
+    <div class="cta-panel">
+      <p>Available for select projects</p>
+      <strong>Q2 Open</strong>
+      <button data-sfx="start">Book Call</button>
+    </div>
+
+    <div class="theme-switcher" aria-label="Theme selector">
+      {
+        themes.map((theme) => (
+          <button
+            type="button"
+            aria-label={theme.label}
+            aria-pressed={theme.id === "academy" ? "true" : "false"}
+            data-theme-choice={theme.id}
+            data-sfx="hover"
+            style={`--swatch: ${theme.swatch}`}
+          >
+            <span></span>
+          </button>
+        ))
+      }
+    </div>
+  </section>
+</main>
+
+<script is:inline>
+  (() => {
+    const heroShell = document.querySelector(".hero-shell");
+    const controls = document.querySelectorAll("[data-sfx]");
+    const themeButtons = document.querySelectorAll("[data-theme-choice]");
+    const themeVideos = document.querySelectorAll("video[data-theme-bg], .hero-art");
+    const randomizeThemeButton = document.querySelector("[data-randomize-theme]");
+    const themeIds = heroShell?.dataset.themeIds?.split(",").filter(Boolean) || ["academy"];
+    const loader = document.querySelector("[data-loader]");
+    let audioContext;
+    let lastHover = 0;
+
+    const applyTheme = (theme) => {
+      if (!heroShell) return;
+      heroShell.dataset.theme = theme;
+      themeVideos.forEach((video) => {
+        const isAcademyVideo = video.classList.contains("hero-art");
+        const isActive = isAcademyVideo ? theme === "academy" : video.dataset.themeBg === theme;
+
+        if (isActive) {
+          window.requestAnimationFrame(() => video.play?.().catch(() => {}));
+        } else if (!isAcademyVideo) {
+          video.pause?.();
+        }
+      });
+      themeButtons.forEach((button) => {
+        button.setAttribute("aria-pressed", String(button.dataset.themeChoice === theme));
+      });
+      window.localStorage.setItem("portfolio-theme", theme);
+    };
+
+    const savedTheme = window.localStorage.getItem("portfolio-theme");
+    if (savedTheme) {
+      applyTheme(savedTheme);
+    }
+
+    const finishLoading = () => {
+      if (!loader) return;
+      loader.classList.add("is-hidden");
+      window.setTimeout(() => loader.remove(), 720);
+    };
+
+    if (document.readyState === "complete") {
+      window.setTimeout(finishLoading, 2300);
+    } else {
+      window.addEventListener("load", () => window.setTimeout(finishLoading, 2300), { once: true });
+    }
+
+    const getAudioContext = () => {
+      if (!audioContext) {
+        const AudioContextClass = window.AudioContext || window.webkitAudioContext;
+        if (!AudioContextClass) return undefined;
+        audioContext = new AudioContextClass();
+      }
+
+      if (audioContext.state === "suspended") {
+        audioContext.resume();
+      }
+
+      return audioContext;
+    };
+
+    const playTone = ({ frequency, endFrequency, duration, gain, type = "triangle" }) => {
+      const context = getAudioContext();
+      if (!context) return;
+
+      const oscillator = context.createOscillator();
+      const volume = context.createGain();
+      const now = context.currentTime;
+
+      oscillator.type = type;
+      oscillator.frequency.setValueAtTime(frequency, now);
+      oscillator.frequency.exponentialRampToValueAtTime(endFrequency, now + duration);
+      volume.gain.setValueAtTime(0.0001, now);
+      volume.gain.exponentialRampToValueAtTime(gain, now + 0.012);
+      volume.gain.exponentialRampToValueAtTime(0.0001, now + duration);
+
+      oscillator.connect(volume);
+      volume.connect(context.destination);
+      oscillator.start(now);
+      oscillator.stop(now + duration + 0.02);
+    };
+
+    const playHover = (variant) => {
+      const now = performance.now();
+      if (now - lastHover < 75) return;
+      lastHover = now;
+
+      const isPanel = variant === "panel";
+      playTone({
+        frequency: isPanel ? 760 : 620,
+        endFrequency: isPanel ? 1140 : 920,
+        duration: isPanel ? 0.075 : 0.055,
+        gain: isPanel ? 0.034 : 0.024,
+        type: "sine"
+      });
+    };
+
+    const playClick = (variant) => {
+      const isStart = variant === "start";
+      playTone({
+        frequency: isStart ? 420 : 360,
+        endFrequency: isStart ? 840 : 560,
+        duration: isStart ? 0.13 : 0.085,
+        gain: isStart ? 0.055 : 0.038,
+        type: "triangle"
+      });
+
+      if (isStart) {
+        window.setTimeout(() => {
+          playTone({
+            frequency: 980,
+            endFrequency: 1320,
+            duration: 0.09,
+            gain: 0.034,
+            type: "sine"
+          });
+        }, 70);
+      }
+    };
+
+    controls.forEach((control) => {
+      const variant = control.dataset.sfx;
+
+      control.addEventListener("pointerenter", () => playHover(variant));
+      control.addEventListener("focus", () => playHover(variant));
+      control.addEventListener("pointerdown", () => playClick(variant));
+      control.addEventListener("click", (event) => {
+        if (control.tagName === "A" && control.getAttribute("href") === "#") {
+          event.preventDefault();
+        }
+      });
+    });
+
+    themeButtons.forEach((button) => {
+      button.addEventListener("click", () => applyTheme(button.dataset.themeChoice || "academy"));
+    });
+
+    randomizeThemeButton?.addEventListener("click", () => {
+      const currentTheme = heroShell?.dataset.theme || "academy";
+      const choices = themeIds.filter((theme) => theme !== currentTheme);
+      const nextTheme = choices[Math.floor(Math.random() * choices.length)] || "academy";
+      applyTheme(nextTheme);
+    });
+  })();
+</script>

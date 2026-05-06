@@ -1,0 +1,40 @@
+---
+import { workProjects } from "../data/templateContent";
+import "../styles/global.css";
+---
+
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Selected Work</title>
+  </head>
+  <body>
+    <main class="work-page">
+      <img class="work-bg" src="/assets/work/work-studio-bg.png" alt="" aria-hidden="true" />
+      <div class="work-noise" aria-hidden="true"></div>
+
+      <header class="work-header">
+        <a class="work-back" href="/" aria-label="Back to home">Back</a>
+      </header>
+
+      <section class="work-select" aria-label="Selected portfolio work">
+        {
+          workProjects.map((project) => (
+            <a class={`work-button ${project.className}`} href="#" data-sfx="panel">
+              <img src={project.image} alt="" aria-hidden="true" style={`object-position: ${project.objectPosition}`} />
+              <span>{project.title}</span>
+            </a>
+          ))
+        }
+      </section>
+    </main>
+
+    <script is:inline>
+      document.querySelectorAll('.work-button[href="#"]').forEach((button) => {
+        button.addEventListener("click", (event) => event.preventDefault());
+      });
+    </script>
+  </body>
+</html>

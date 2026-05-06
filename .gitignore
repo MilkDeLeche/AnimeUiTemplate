@@ -1,0 +1,14 @@
+node_modules/
+dist/
+.astro/
+astro-dev.log
+astro-dev.err.log
+*.log
+.DS_Store
+*.local
+.env
+.env.*
+
+# Older static prototype files from the first mockup pass.
+/index.html
+/assets/
