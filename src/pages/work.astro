@@ -16,7 +16,7 @@ import "../styles/global.css";
       <div class="work-noise" aria-hidden="true"></div>
 
       <header class="work-header">
-        <a class="work-back" href="/" aria-label="Back to home">Back</a>
+        <a class="work-back" href="/" aria-label="Back to home" data-sfx="back">Back</a>
       </header>
 
       <section class="work-select" aria-label="Selected portfolio work">
@@ -29,10 +29,65 @@ import "../styles/global.css";
           ))
         }
       </section>
+
+      <a
+        class="music-dock"
+        href="https://www.youtube.com/watch?v=yKoBrB2dSbw"
+        target="_blank"
+        rel="noreferrer"
+        aria-label="Play music on YouTube"
+        data-sfx="music"
+      >
+        <video autoplay muted loop playsinline preload="metadata" aria-hidden="true">
+          <source src="/assets/work/cd-player-nobg.mp4" type="video/mp4" />
+        </video>
+        <span>Play Music</span>
+      </a>
     </main>
 
     <script is:inline>
-      document.querySelectorAll('.work-button[href="#"]').forEach((button) => {
+      const clickSoundPool = Array.from({ length: 4 }, () => {
+        const sound = new Audio("/assets/sounds/ui-click-crisp.wav");
+        sound.preload = "auto";
+        sound.volume = 0.58;
+        return sound;
+      });
+      const hoverSoundPool = Array.from({ length: 5 }, () => {
+        const sound = new Audio("/assets/sounds/ui-hover-anime.wav");
+        sound.preload = "auto";
+        sound.volume = 0.42;
+        return sound;
+      });
+      let clickSoundIndex = 0;
+      let hoverSoundIndex = 0;
+      let lastHover = 0;
+
+      const playFromPool = (pool, index) => {
+        const sound = pool[index % pool.length];
+        sound.currentTime = 0;
+        sound.play().catch(() => {});
+        return (index + 1) % pool.length;
+      };
+
+      document.querySelectorAll("[data-sfx]").forEach((button) => {
+        button.addEventListener("pointerdown", () => {
+          clickSoundIndex = playFromPool(clickSoundPool, clickSoundIndex);
+        });
+      });
+
+      document.querySelectorAll(".work-button, .work-back, .music-dock").forEach((button) => {
+        const playHover = () => {
+          const now = performance.now();
+          if (now - lastHover < 70) return;
+          lastHover = now;
+          hoverSoundIndex = playFromPool(hoverSoundPool, hoverSoundIndex);
+        };
+
+        button.addEventListener("pointerenter", playHover);
+        button.addEventListener("focus", playHover);
+      });
+
+      document.querySelectorAll(".work-button[href=\"#\"]").forEach((button) => {
         button.addEventListener("click", (event) => event.preventDefault());
       });
     </script>

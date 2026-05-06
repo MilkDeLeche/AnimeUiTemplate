@@ -66,11 +66,11 @@ export const themes = [
 export const themeIds = themes.map((theme) => theme.id);
 
 export const workProjects = [
-  { title: "Project 01", image: "/assets/work/work-strip.png", className: "slot-1", objectPosition: "6% 12%" },
-  { title: "Project 02", image: "/assets/work/work-strip.png", className: "slot-2", objectPosition: "21% 12%" },
-  { title: "Project 03", image: "/assets/work/work-strip.png", className: "slot-3", objectPosition: "36% 12%" },
-  { title: "Project 04", image: "/assets/work/work-strip.png", className: "slot-4", objectPosition: "51% 12%" },
-  { title: "Project 05", image: "/assets/work/work-strip.png", className: "slot-5", objectPosition: "66% 12%" },
-  { title: "Project 06", image: "/assets/work/work-strip.png", className: "slot-6", objectPosition: "81% 12%" },
-  { title: "Project 07", image: "/assets/work/work-strip.png", className: "slot-7", objectPosition: "95% 12%" }
+  { title: "Project 01", image: "/assets/work/work-strip-rpg.png", className: "slot-1", objectPosition: "7% 14%" },
+  { title: "Project 02", image: "/assets/work/work-strip-rpg.png", className: "slot-2", objectPosition: "21% 14%" },
+  { title: "Project 03", image: "/assets/work/work-strip-rpg.png", className: "slot-3", objectPosition: "36% 14%" },
+  { title: "Project 04", image: "/assets/work/work-strip-rpg.png", className: "slot-4", objectPosition: "50% 14%" },
+  { title: "Project 05", image: "/assets/work/work-strip-rpg.png", className: "slot-5", objectPosition: "64% 14%" },
+  { title: "Project 06", image: "/assets/work/work-strip-rpg.png", className: "slot-6", objectPosition: "79% 14%" },
+  { title: "Project 07", image: "/assets/work/work-strip-rpg.png", className: "slot-7", objectPosition: "93% 14%" }
 ];

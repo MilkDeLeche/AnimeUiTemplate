@@ -87,9 +87,9 @@ Each slot is a clickable work button:
 ```ts
 {
   title: "Project 01",
-  image: "/assets/work/work-strip.png",
+  image: "/assets/work/work-strip-rpg.png",
   className: "slot-1",
-  objectPosition: "6% 12%"
+  objectPosition: "7% 14%"
 }
 ```
 
@@ -98,6 +98,8 @@ To use a buyer's own image:
 1. Put their image in `public/assets/work/`.
 2. Change `image`.
 3. Adjust `objectPosition` until the crop looks right.
+
+The default file `work-strip-rpg.png` is one wide fantasy RPG strip. Each work slot crops a different section by changing `objectPosition`.
 
 Keep the `slot-1` through `slot-7` class names unless you are changing the layout.
 
@@ -175,11 +177,21 @@ public/assets/sounds/
 Recommended files:
 
 ```text
-hover.mp3
-click.mp3
-confirm.mp3
-loader-slash.mp3
+ui-click-crisp.wav
+ui-hover-anime.wav
 ```
+
+Main-page clicks and selected-work clicks use `ui-click-crisp.wav`.
+
+Selected-work hover states use `ui-hover-anime.wav`.
+
+The selected-work music dock video is:
+
+```text
+public/assets/work/cd-player-nobg.mp4
+```
+
+It links to the YouTube track in `src/pages/work.astro`.
 
 ## 6. CSS Map
 

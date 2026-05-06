@@ -58,6 +58,14 @@ a {
   --loader-glow: #5ee7ff;
   --loader-card: #eefcff;
   --loader-ink: #050505;
+  --ui-accent: #1686d4;
+  --ui-glow: #6ee7ff;
+  --ui-paper: rgba(255, 255, 255, 0.94);
+  --ui-text: #124f87;
+  --ui-label: #19719e;
+  --ui-ring: rgba(109, 231, 255, 0.24);
+  --ui-panel-a: rgba(255, 255, 255, 0.58);
+  --ui-panel-b: rgba(207, 246, 255, 0.08);
   width: min(100%, 1440px);
   min-height: 100vh;
   display: grid;
@@ -71,6 +79,14 @@ a {
   --loader-accent: #13d7ff;
   --loader-glow: #67f0ff;
   --loader-card: #e9fbff;
+  --ui-accent: #13d7ff;
+  --ui-glow: #67f0ff;
+  --ui-paper: rgba(219, 251, 255, 0.96);
+  --ui-text: #064b8a;
+  --ui-label: #0a91bd;
+  --ui-ring: rgba(103, 240, 255, 0.38);
+  --ui-panel-a: rgba(219, 251, 255, 0.46);
+  --ui-panel-b: rgba(8, 58, 104, 0.18);
 }
 
 .hero-shell[data-theme="sakura"] {
@@ -79,6 +95,14 @@ a {
   --loader-accent: #ff8fc1;
   --loader-glow: #ffd6e9;
   --loader-card: #fff5fb;
+  --ui-accent: #ff75b4;
+  --ui-glow: #ffd6e9;
+  --ui-paper: rgba(255, 245, 251, 0.96);
+  --ui-text: #9d326d;
+  --ui-label: #d34d8c;
+  --ui-ring: rgba(255, 143, 193, 0.4);
+  --ui-panel-a: rgba(255, 245, 251, 0.5);
+  --ui-panel-b: rgba(255, 143, 193, 0.16);
 }
 
 .hero-shell[data-theme="violet"] {
@@ -87,6 +111,14 @@ a {
   --loader-accent: #8f6bff;
   --loader-glow: #26f0de;
   --loader-card: #f4efff;
+  --ui-accent: #8f6bff;
+  --ui-glow: #26f0de;
+  --ui-paper: rgba(244, 239, 255, 0.96);
+  --ui-text: #4e35a7;
+  --ui-label: #6b4dde;
+  --ui-ring: rgba(143, 107, 255, 0.42);
+  --ui-panel-a: rgba(244, 239, 255, 0.48);
+  --ui-panel-b: rgba(38, 240, 222, 0.11);
 }
 
 .hero-shell[data-theme="solar"] {
@@ -95,6 +127,14 @@ a {
   --loader-accent: #ffc83d;
   --loader-glow: #4ce7ff;
   --loader-card: #fff8df;
+  --ui-accent: #ffc83d;
+  --ui-glow: #4ce7ff;
+  --ui-paper: rgba(255, 248, 223, 0.96);
+  --ui-text: #8b4a08;
+  --ui-label: #c8660f;
+  --ui-ring: rgba(255, 200, 61, 0.42);
+  --ui-panel-a: rgba(255, 248, 223, 0.5);
+  --ui-panel-b: rgba(255, 200, 61, 0.18);
 }
 
 .loading-sequence {
@@ -340,11 +380,12 @@ a {
 .quick-nav button,
 .resources > div,
 .message-actions button {
-  border: 1px solid rgba(202, 245, 255, 0.62);
-  background: linear-gradient(180deg, rgba(23, 124, 184, 0.82), rgba(9, 66, 114, 0.72));
+  border: 1px solid color-mix(in srgb, var(--ui-glow) 58%, white 16%);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--ui-accent) 78%, white 8%), color-mix(in srgb, var(--loader-mid) 72%, black 12%));
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.38),
-    0 8px 18px rgba(5, 38, 75, 0.2);
+    0 8px 18px color-mix(in srgb, var(--loader-dark) 38%, transparent);
   color: white;
   text-shadow: 0 2px 0 rgba(1, 45, 80, 0.46);
   backdrop-filter: blur(7px);
@@ -368,13 +409,13 @@ a {
 
 .level-badge span {
   font-size: 14px;
-  color: rgba(210, 245, 255, 0.9);
+  color: color-mix(in srgb, var(--ui-glow) 64%, white);
 }
 
 .level-badge strong {
   margin-top: 3px;
   font-size: clamp(30px, 3.3vw, 48px);
-  color: var(--yellow);
+  color: color-mix(in srgb, var(--loader-accent) 62%, var(--yellow));
 }
 
 .quick-nav {
@@ -416,11 +457,11 @@ a {
 .quick-nav button:focus-visible,
 .message-actions button:hover,
 .message-actions button:focus-visible {
-  border-color: rgba(255, 238, 96, 0.96);
+  border-color: color-mix(in srgb, var(--ui-glow) 72%, white);
   filter: brightness(1.13) saturate(1.12);
   box-shadow:
     inset 0 1px 0 rgba(255, 255, 255, 0.48),
-    0 0 0 2px rgba(109, 231, 255, 0.26),
+    0 0 0 2px var(--ui-ring),
     0 12px 24px rgba(5, 38, 75, 0.26);
   transform: translateY(-3px);
 }
@@ -546,7 +587,7 @@ a {
 .resources small {
   font-family: Impact, "Arial Narrow", Arial, sans-serif;
   font-size: 15px;
-  color: #d9fbff;
+  color: color-mix(in srgb, var(--ui-glow) 68%, white);
   text-transform: uppercase;
 }
 
@@ -554,7 +595,7 @@ a {
   font-family: Impact, "Arial Narrow", Arial, sans-serif;
   font-size: 28px;
   line-height: 0.8;
-  color: var(--yellow);
+  color: color-mix(in srgb, var(--loader-accent) 58%, var(--yellow));
 }
 
 .gem {
@@ -680,13 +721,13 @@ a {
   flex-direction: column;
   justify-content: flex-end;
   padding: 12px 13px;
-  border: 5px solid rgba(255, 255, 255, 0.94);
+  border: 5px solid var(--ui-paper);
   border-radius: 4px;
   color: #113152;
   text-decoration: none;
   background:
-    linear-gradient(100deg, rgba(255, 255, 255, 0.58) 0 27%, rgba(255, 255, 255, 0.18) 50%, rgba(255, 255, 255, 0.02) 100%),
-    linear-gradient(145deg, rgba(255, 255, 255, 0.18), rgba(207, 246, 255, 0.06)),
+    linear-gradient(100deg, var(--ui-panel-a) 0 27%, rgba(255, 255, 255, 0.16) 50%, rgba(255, 255, 255, 0.02) 100%),
+    linear-gradient(145deg, rgba(255, 255, 255, 0.18), var(--ui-panel-b)),
     var(--card-image),
     linear-gradient(135deg, var(--card-a), var(--card-b));
   background-size: cover;
@@ -719,11 +760,11 @@ a {
 
 .menu-card:hover,
 .menu-card:focus-visible {
-  border-color: rgba(255, 238, 96, 0.98);
+  border-color: color-mix(in srgb, var(--ui-glow) 72%, white);
   filter: brightness(1.08) saturate(1.1);
   box-shadow:
     inset 0 0 0 1px rgba(17, 88, 136, 0.18),
-    0 0 0 3px rgba(109, 231, 255, 0.24),
+    0 0 0 3px var(--ui-ring),
     0 18px 34px rgba(0, 39, 76, 0.34);
   transform: skew(-7deg) translateY(-8px) scale(1.035);
   z-index: 4;
@@ -757,12 +798,12 @@ a {
 
 .menu-card small {
   font-size: 19px;
-  color: #19719e;
+  color: var(--ui-label);
 }
 
 .menu-card strong {
   font-size: clamp(28px, 2.85vw, 43px);
-  color: #124f87;
+  color: var(--ui-text);
 }
 
 .menu-card .alert {
@@ -817,10 +858,11 @@ a {
   align-items: center;
   gap: 6px 16px;
   padding: 12px 14px 12px 18px;
-  border: 1px solid rgba(255, 255, 255, 0.7);
+  border: 1px solid color-mix(in srgb, var(--ui-glow) 52%, white);
   border-radius: 6px;
-  background: rgba(9, 60, 101, 0.64);
-  box-shadow: 0 16px 34px rgba(0, 35, 70, 0.26);
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--loader-mid) 72%, transparent), color-mix(in srgb, var(--loader-dark) 48%, transparent));
+  box-shadow: 0 16px 34px color-mix(in srgb, var(--loader-dark) 34%, transparent);
   backdrop-filter: blur(9px);
 }
 
@@ -832,9 +874,9 @@ a {
   display: flex;
   gap: 10px;
   padding: 8px;
-  border: 1px solid rgba(255, 255, 255, 0.58);
+  border: 1px solid color-mix(in srgb, var(--ui-glow) 42%, white);
   border-radius: 6px;
-  background: rgba(5, 45, 78, 0.46);
+  background: color-mix(in srgb, var(--loader-dark) 58%, transparent);
   backdrop-filter: blur(9px);
   box-shadow: 0 14px 28px rgba(0, 35, 70, 0.22);
 }
@@ -1066,6 +1108,77 @@ a {
   transform: scale(1.035);
 }
 
+.music-dock {
+  position: fixed;
+  left: 50%;
+  bottom: clamp(18px, 3vw, 36px);
+  z-index: 4;
+  width: clamp(150px, 15vw, 250px);
+  aspect-ratio: 1;
+  display: grid;
+  place-items: center;
+  color: white;
+  text-decoration: none;
+  filter:
+    drop-shadow(0 24px 28px rgba(0, 0, 0, 0.48))
+    drop-shadow(0 0 18px rgba(150, 98, 255, 0.28));
+  transform: translateX(-50%);
+  transition:
+    transform 180ms ease,
+    filter 180ms ease;
+}
+
+.music-dock::before {
+  content: "";
+  position: absolute;
+  inset: 18%;
+  border-radius: 999px;
+  background:
+    radial-gradient(circle, rgba(255, 255, 255, 0.16), transparent 62%),
+    radial-gradient(circle, rgba(116, 229, 255, 0.28), transparent 70%);
+  filter: blur(8px);
+}
+
+.music-dock video {
+  position: relative;
+  z-index: 1;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+
+.music-dock span {
+  position: absolute;
+  z-index: 2;
+  left: 50%;
+  bottom: 4%;
+  min-width: 116px;
+  padding: 5px 12px 7px;
+  border: 2px solid rgba(255, 255, 255, 0.78);
+  border-radius: 4px;
+  background: linear-gradient(180deg, rgba(109, 231, 255, 0.88), rgba(89, 75, 220, 0.82));
+  color: white;
+  font-family: Impact, "Arial Narrow", Arial, sans-serif;
+  font-size: clamp(16px, 1.3vw, 23px);
+  line-height: 1;
+  text-align: center;
+  text-transform: uppercase;
+  text-shadow: 0 2px 0 rgba(15, 26, 74, 0.74);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.42),
+    0 10px 18px rgba(0, 0, 0, 0.28);
+  transform: translateX(-50%) skew(-8deg);
+}
+
+.music-dock:hover,
+.music-dock:focus-visible {
+  filter:
+    drop-shadow(0 28px 32px rgba(0, 0, 0, 0.52))
+    drop-shadow(0 0 24px rgba(109, 231, 255, 0.44));
+  transform: translateX(-50%) translateY(-8px) scale(1.04);
+}
+
 .work-card-a {
   left: 0;
   top: 5%;
@@ -1180,14 +1293,14 @@ a {
   font-size: 13px;
   font-weight: 800;
   text-transform: uppercase;
-  color: #d7fbff;
+  color: color-mix(in srgb, var(--ui-glow) 68%, white);
 }
 
 .cta-panel strong {
   font-family: Impact, "Arial Narrow", Arial, sans-serif;
   font-size: 34px;
   line-height: 0.8;
-  color: var(--yellow);
+  color: color-mix(in srgb, var(--loader-accent) 58%, var(--yellow));
 }
 
 .cta-panel button {
@@ -1199,13 +1312,16 @@ a {
   padding: 0 22px;
   border: 0;
   border-radius: 4px;
-  background: linear-gradient(180deg, #ffe673, #ff8e35);
-  color: #243146;
+  background:
+    linear-gradient(180deg, color-mix(in srgb, var(--loader-accent) 62%, #ffe673), color-mix(in srgb, var(--loader-accent) 58%, #ff8e35));
+  color: color-mix(in srgb, var(--loader-dark) 82%, #243146);
   font-family: Impact, "Arial Narrow", Arial, sans-serif;
   font-size: 24px;
   font-weight: 800;
   text-transform: uppercase;
-  box-shadow: 0 5px 0 #b94f21, 0 12px 24px rgba(90, 45, 4, 0.25);
+  box-shadow:
+    0 5px 0 color-mix(in srgb, var(--loader-mid) 72%, #b94f21),
+    0 12px 24px color-mix(in srgb, var(--loader-dark) 28%, transparent);
   cursor: pointer;
   transition:
     transform 160ms ease,
@@ -1218,9 +1334,9 @@ a {
   filter: brightness(1.08) saturate(1.08);
   transform: translateY(-4px);
   box-shadow:
-    0 7px 0 #b94f21,
-    0 0 0 3px rgba(255, 238, 96, 0.32),
-    0 18px 32px rgba(90, 45, 4, 0.34);
+    0 7px 0 color-mix(in srgb, var(--loader-mid) 72%, #b94f21),
+    0 0 0 3px var(--ui-ring),
+    0 18px 32px color-mix(in srgb, var(--loader-dark) 34%, transparent);
 }
 
 @keyframes ui-icon-pop {
@@ -1429,6 +1545,10 @@ a {
   .slot-1 {
     width: 16%;
   }
+
+  .music-dock {
+    width: clamp(132px, 18vw, 210px);
+  }
 }
 
 @media (max-width: 680px) {
@@ -1562,5 +1682,15 @@ a {
     position: absolute;
     margin: 0;
     height: 88%;
+  }
+
+  .music-dock {
+    bottom: 64px;
+    width: 132px;
+  }
+
+  .music-dock span {
+    min-width: 96px;
+    font-size: 16px;
   }
 }

@@ -176,8 +176,15 @@ import { menuCards, portfolioStats, quickActions, themes } from "../data/templat
     const randomizeThemeButton = document.querySelector("[data-randomize-theme]");
     const themeIds = heroShell?.dataset.themeIds?.split(",").filter(Boolean) || ["academy"];
     const loader = document.querySelector("[data-loader]");
+    const clickSoundPool = Array.from({ length: 4 }, () => {
+      const sound = new Audio("/assets/sounds/ui-click-crisp.wav");
+      sound.preload = "auto";
+      sound.volume = 0.58;
+      return sound;
+    });
     let audioContext;
     let lastHover = 0;
+    let clickSoundIndex = 0;
 
     const applyTheme = (theme) => {
       if (!heroShell) return;
@@ -265,27 +272,11 @@ import { menuCards, portfolioStats, quickActions, themes } from "../data/templat
       });
     };
 
-    const playClick = (variant) => {
-      const isStart = variant === "start";
-      playTone({
-        frequency: isStart ? 420 : 360,
-        endFrequency: isStart ? 840 : 560,
-        duration: isStart ? 0.13 : 0.085,
-        gain: isStart ? 0.055 : 0.038,
-        type: "triangle"
-      });
-
-      if (isStart) {
-        window.setTimeout(() => {
-          playTone({
-            frequency: 980,
-            endFrequency: 1320,
-            duration: 0.09,
-            gain: 0.034,
-            type: "sine"
-          });
-        }, 70);
-      }
+    const playClick = () => {
+      const sound = clickSoundPool[clickSoundIndex];
+      clickSoundIndex = (clickSoundIndex + 1) % clickSoundPool.length;
+      sound.currentTime = 0;
+      sound.play().catch(() => {});
     };
 
     controls.forEach((control) => {

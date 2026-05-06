@@ -68,6 +68,7 @@ public/assets/
   hero-background.mp4
   anime-rooftop-hero.png
   cards/
+  sounds/
   themes/
   work/
 ```
@@ -77,6 +78,8 @@ Use `public/assets/work/` for portfolio project images.
 Use `public/assets/themes/` for theme background videos and posters.
 
 Use `public/assets/cards/` for cute menu-card art.
+
+Use `public/assets/sounds/` for button click and hover sounds.
 
 ## Pages
 
