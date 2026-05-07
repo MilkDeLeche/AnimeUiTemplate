@@ -12,3 +12,7 @@ astro-dev.err.log
 # Older static prototype files from the first mockup pass.
 /index.html
 /assets/
+
+# Source/intermediate art files kept local while exporting final template assets.
+public/assets/work/*-source.png
+public/assets/work/room-plant.png

@@ -1,0 +1,339 @@
+<section class="cozy-game" aria-label="Cozy garden mini game" tabindex="0" data-cozy-game data-sfx="panel">
+  <div class="game-field" data-game-field>
+    <canvas class="cozy-canvas" data-cozy-canvas width="1000" height="430"></canvas>
+    <div class="game-toast" data-game-toast>Care for the studio plant</div>
+  </div>
+  <div class="game-hud" aria-hidden="true">
+    <span data-game-status>WASD to move</span>
+    <strong data-game-score>0/3</strong>
+  </div>
+</section>
+
+<script is:inline>
+  (() => {
+    const game = document.querySelector("[data-cozy-game]");
+    const canvas = document.querySelector("[data-cozy-canvas]");
+    const statusText = document.querySelector("[data-game-status]");
+    const scoreText = document.querySelector("[data-game-score]");
+    const toast = document.querySelector("[data-game-toast]");
+    const context = canvas?.getContext("2d");
+    if (!game || !canvas || !context) return;
+
+    const clickSounds = Array.from({ length: 3 }, () => {
+      const sound = new Audio("/assets/sounds/ui-click-crisp.wav");
+      sound.preload = "auto";
+      sound.volume = 0.46;
+      return sound;
+    });
+    let clickSoundIndex = 0;
+    const pressedKeys = new Set();
+
+    const playClick = () => {
+      const sound = clickSounds[clickSoundIndex];
+      clickSoundIndex = (clickSoundIndex + 1) % clickSounds.length;
+      sound.currentTime = 0;
+      sound.play().catch(() => {});
+    };
+
+    const sprite = new Image();
+    sprite.src = "/assets/work/chibi-sprite.png";
+    const plantSprite = new Image();
+    plantSprite.src = "/assets/work/room-plant-crop.png";
+    const spriteFrames = [];
+
+    const gameState = {
+      width: 1000,
+      height: 430,
+      x: 430,
+      y: 294,
+      vx: 0,
+      vy: 0,
+      direction: 0,
+      stepCycle: 0,
+      completed: 0,
+      messageUntil: 0,
+      lastTime: performance.now(),
+      particles: []
+    };
+
+    const roomPlant = { x: 825, y: 312, stage: 0 };
+
+    const showToast = (message) => {
+      if (!toast) return;
+      toast.textContent = message;
+      toast.classList.add("is-visible");
+      gameState.messageUntil = performance.now() + 1600;
+    };
+
+    const updateScore = () => {
+      gameState.completed = roomPlant.stage;
+      if (scoreText) scoreText.textContent = `${gameState.completed}/3`;
+      if (statusText) {
+        statusText.textContent = gameState.completed >= 3 ? "Plant thriving" : "Press E by the plant";
+      }
+    };
+
+    const drawPixelRect = (x, y, width, height, color) => {
+      context.fillStyle = color;
+      context.fillRect(Math.round(x), Math.round(y), Math.round(width), Math.round(height));
+    };
+
+    const tendPlant = () => {
+      const distance = Math.hypot(gameState.x - roomPlant.x, gameState.y - roomPlant.y);
+      if (distance > 118) {
+        showToast("Walk closer to the plant");
+        return;
+      }
+      if (roomPlant.stage >= 3) {
+        showToast("The plant looks happy");
+        return;
+      }
+
+      roomPlant.stage += 1;
+      for (let i = 0; i < 10; i++) {
+        gameState.particles.push({
+          x: roomPlant.x + Math.random() * 44 - 22,
+          y: roomPlant.y - 74 + Math.random() * 28,
+          vx: Math.random() * 32 - 16,
+          vy: -36 - Math.random() * 24,
+          life: 0.72,
+          color: i % 2 ? "#9ff7ff" : "#fff1a8"
+        });
+      }
+
+      updateScore();
+      playClick();
+      showToast(roomPlant.stage >= 3 ? "Plant thriving" : "Watered");
+    };
+
+    const buildSpriteFrames = () => {
+      const frameWidth = Math.floor(sprite.width / 3);
+      const frameHeight = Math.floor(sprite.height / 4);
+      const sampleCanvas = document.createElement("canvas");
+      const sampleContext = sampleCanvas.getContext("2d");
+      sampleCanvas.width = sprite.width;
+      sampleCanvas.height = sprite.height;
+      sampleContext.drawImage(sprite, 0, 0);
+
+      for (let row = 0; row < 4; row++) {
+        spriteFrames[row] = [];
+        for (let col = 0; col < 3; col++) {
+          const startX = col * frameWidth;
+          const startY = row * frameHeight;
+          const pixels = sampleContext.getImageData(startX, startY, frameWidth, frameHeight).data;
+          let minX = frameWidth;
+          let minY = frameHeight;
+          let maxX = 0;
+          let maxY = 0;
+
+          for (let y = 0; y < frameHeight; y++) {
+            for (let x = 0; x < frameWidth; x++) {
+              if (pixels[(y * frameWidth + x) * 4 + 3] > 12) {
+                minX = Math.min(minX, x);
+                minY = Math.min(minY, y);
+                maxX = Math.max(maxX, x);
+                maxY = Math.max(maxY, y);
+              }
+            }
+          }
+
+          const empty = minX > maxX || minY > maxY;
+          spriteFrames[row][col] = {
+            sx: startX + (empty ? 0 : minX),
+            sy: startY + (empty ? 0 : minY),
+            sw: empty ? frameWidth : maxX - minX + 1,
+            sh: empty ? frameHeight : maxY - minY + 1
+          };
+        }
+      }
+    };
+
+    const sanitizeSpriteSource = () => {
+      const cleanupCanvas = document.createElement("canvas");
+      cleanupCanvas.width = sprite.width;
+      cleanupCanvas.height = sprite.height;
+      const cleanupContext = cleanupCanvas.getContext("2d");
+      cleanupContext.drawImage(sprite, 0, 0);
+      const frame = cleanupContext.getImageData(0, 0, cleanupCanvas.width, cleanupCanvas.height);
+
+      for (let i = 0; i < frame.data.length; i += 4) {
+        const red = frame.data[i];
+        const green = frame.data[i + 1];
+        const blue = frame.data[i + 2];
+        const isKeyFringe = green > 70 && green > red * 1.08 && green > blue * 1.08;
+        if (isKeyFringe || frame.data[i + 3] < 24) {
+          frame.data[i + 3] = 0;
+        }
+      }
+
+      cleanupContext.putImageData(frame, 0, 0);
+      sprite.src = cleanupCanvas.toDataURL("image/png");
+    };
+
+    const drawRoomPlant = () => {
+      const scale = 0.9 + roomPlant.stage * 0.05;
+      const width = 76 * scale;
+      const height = 92 * scale;
+      const x = roomPlant.x - width / 2;
+      const y = roomPlant.y - height;
+
+      context.save();
+      if (roomPlant.stage > 0) {
+        context.globalAlpha = 0.18 + roomPlant.stage * 0.06;
+        context.fillStyle = "#fff1a8";
+        context.beginPath();
+        context.ellipse(roomPlant.x, roomPlant.y - 48, width * 0.48, height * 0.42, 0, 0, Math.PI * 2);
+        context.fill();
+        context.globalAlpha = 1;
+      }
+
+      if (plantSprite.complete) {
+        context.imageSmoothingEnabled = false;
+        context.drawImage(plantSprite, Math.round(x), Math.round(y), Math.round(width), Math.round(height));
+      }
+
+      if (roomPlant.stage >= 3) {
+        drawPixelRect(roomPlant.x - 5, roomPlant.y - height - 12, 10, 10, "#fff1a8");
+        drawPixelRect(roomPlant.x - 12, roomPlant.y - height - 5, 24, 4, "#ff9fe0");
+      }
+      context.restore();
+    };
+
+    const drawCharacter = (moving) => {
+      if (!sprite.complete) return;
+      const framePattern = [1, 0, 2, 0];
+      const frame = moving ? framePattern[Math.floor(gameState.stepCycle / 22) % framePattern.length] : 0;
+      const sourceDirection = gameState.direction === 2 ? 1 : gameState.direction;
+      const spriteFrame = spriteFrames[sourceDirection]?.[frame];
+      if (!spriteFrame) return;
+
+      const drawWidth = 86;
+      const drawHeight = Math.round(drawWidth * (spriteFrame.sh / spriteFrame.sw));
+      const drawX = Math.round(gameState.x - drawWidth / 2);
+      const drawY = Math.round(gameState.y - drawHeight);
+
+      context.imageSmoothingEnabled = false;
+      context.save();
+      if (gameState.direction === 2) {
+        context.translate(drawX + drawWidth, drawY);
+        context.scale(-1, 1);
+      } else {
+        context.translate(drawX, drawY);
+      }
+      context.drawImage(sprite, spriteFrame.sx, spriteFrame.sy, spriteFrame.sw, spriteFrame.sh, 0, 0, drawWidth, drawHeight);
+      context.restore();
+    };
+
+    const renderGame = () => {
+      context.clearRect(0, 0, gameState.width, gameState.height);
+      context.imageSmoothingEnabled = false;
+      drawRoomPlant();
+
+      gameState.particles.forEach((particle) => {
+        drawPixelRect(particle.x, particle.y, 4, 4, particle.color);
+      });
+
+      const moving = ["w", "a", "s", "d", "arrowup", "arrowleft", "arrowdown", "arrowright"].some((key) =>
+        pressedKeys.has(key)
+      );
+      drawCharacter(moving);
+
+      if (performance.now() > gameState.messageUntil) {
+        toast?.classList.remove("is-visible");
+      }
+    };
+
+    const tick = (time) => {
+      const delta = Math.min(0.04, (time - gameState.lastTime) / 1000);
+      gameState.lastTime = time;
+      const walkSpeed = pressedKeys.has("shift") ? 225 : 178;
+      const response = 18;
+      const stopResponse = 26;
+      let inputX = 0;
+      let inputY = 0;
+
+      if (pressedKeys.has("a") || pressedKeys.has("arrowleft")) inputX -= 1;
+      if (pressedKeys.has("d") || pressedKeys.has("arrowright")) inputX += 1;
+      if (pressedKeys.has("w") || pressedKeys.has("arrowup")) inputY -= 1;
+      if (pressedKeys.has("s") || pressedKeys.has("arrowdown")) inputY += 1;
+
+      const inputLength = Math.hypot(inputX, inputY);
+      let targetVx = 0;
+      let targetVy = 0;
+
+      if (inputLength) {
+        inputX /= inputLength;
+        inputY /= inputLength;
+        targetVx = inputX * walkSpeed;
+        targetVy = inputY * walkSpeed;
+      }
+
+      const blend = Math.min(1, (inputLength ? response : stopResponse) * delta);
+      gameState.vx += (targetVx - gameState.vx) * blend;
+      gameState.vy += (targetVy - gameState.vy) * blend;
+
+      const velocity = Math.hypot(gameState.vx, gameState.vy);
+      if (!inputLength && velocity < 6) {
+        gameState.vx = 0;
+        gameState.vy = 0;
+      }
+
+      if (Math.abs(gameState.vx) > Math.abs(gameState.vy)) {
+        gameState.direction = gameState.vx < 0 ? 1 : gameState.vx > 0 ? 2 : gameState.direction;
+      } else if (Math.abs(gameState.vy) > 1) {
+        gameState.direction = gameState.vy > 0 ? 0 : 3;
+      }
+
+      gameState.x = Math.min(930, Math.max(80, gameState.x + gameState.vx * delta));
+      gameState.y = Math.min(360, Math.max(150, gameState.y + gameState.vy * delta));
+      gameState.stepCycle += velocity * delta;
+
+      gameState.particles = gameState.particles
+        .map((particle) => ({
+          ...particle,
+          x: particle.x + particle.vx * delta,
+          y: particle.y + particle.vy * delta,
+          vy: particle.vy + 64 * delta,
+          life: particle.life - delta
+        }))
+        .filter((particle) => particle.life > 0);
+
+      renderGame();
+      window.requestAnimationFrame(tick);
+    };
+
+    window.addEventListener("keydown", (event) => {
+      const key = event.key.toLowerCase();
+      if (!["w", "a", "s", "d", "arrowup", "arrowleft", "arrowdown", "arrowright", "shift", " ", "e"].includes(key)) {
+        return;
+      }
+      event.preventDefault();
+      game.focus();
+      if (key === " " || key === "e") {
+        tendPlant();
+        return;
+      }
+      pressedKeys.add(key);
+    });
+
+    window.addEventListener("keyup", (event) => {
+      pressedKeys.delete(event.key.toLowerCase());
+    });
+
+    game.addEventListener("pointerdown", () => game.focus());
+
+    const prepareSprite = () => {
+      if (!sprite.dataset.cleaned) {
+        sprite.dataset.cleaned = "true";
+        sanitizeSpriteSource();
+        return;
+      }
+      buildSpriteFrames();
+    };
+
+    sprite.addEventListener("load", prepareSprite, { once: false });
+    if (sprite.complete) prepareSprite();
+    updateScore();
+    window.requestAnimationFrame(tick);
+  })();
+</script>

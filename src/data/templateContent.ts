@@ -66,11 +66,11 @@ export const themes = [
 export const themeIds = themes.map((theme) => theme.id);
 
 export const workProjects = [
-  { title: "Project 01", image: "/assets/work/work-strip-rpg.png", className: "slot-1", objectPosition: "7% 14%" },
-  { title: "Project 02", image: "/assets/work/work-strip-rpg.png", className: "slot-2", objectPosition: "21% 14%" },
-  { title: "Project 03", image: "/assets/work/work-strip-rpg.png", className: "slot-3", objectPosition: "36% 14%" },
-  { title: "Project 04", image: "/assets/work/work-strip-rpg.png", className: "slot-4", objectPosition: "50% 14%" },
-  { title: "Project 05", image: "/assets/work/work-strip-rpg.png", className: "slot-5", objectPosition: "64% 14%" },
-  { title: "Project 06", image: "/assets/work/work-strip-rpg.png", className: "slot-6", objectPosition: "79% 14%" },
-  { title: "Project 07", image: "/assets/work/work-strip-rpg.png", className: "slot-7", objectPosition: "93% 14%" }
+  { title: "Project 01", image: "/assets/work/work-card-01.png", className: "slot-1", objectPosition: "center" },
+  { title: "Project 02", image: "/assets/work/work-card-02.png", className: "slot-2", objectPosition: "center" },
+  { title: "Project 03", image: "/assets/work/work-card-03.png", className: "slot-3", objectPosition: "center" },
+  { title: "Project 04", image: "/assets/work/work-card-04.png", className: "slot-4", objectPosition: "center" },
+  { title: "Project 05", image: "/assets/work/work-card-05.png", className: "slot-5", objectPosition: "center" },
+  { title: "Project 06", image: "/assets/work/work-card-06.png", className: "slot-6", objectPosition: "center" },
+  { title: "Project 07", image: "/assets/work/work-card-07.png", className: "slot-7", objectPosition: "center" }
 ];

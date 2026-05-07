@@ -38,6 +38,17 @@ Preview a production build:
 npm run preview
 ```
 
+## Deploy To Netlify
+
+This repo includes `netlify.toml`, so Netlify can use the correct Astro settings automatically.
+
+```text
+Build command: npm run build
+Publish directory: dist
+```
+
+Set the site to deploy from the `main` branch.
+
 ## Most Common Edits
 
 Start with the buyer-friendly content file:
@@ -80,6 +91,22 @@ Use `public/assets/themes/` for theme background videos and posters.
 Use `public/assets/cards/` for cute menu-card art.
 
 Use `public/assets/sounds/` for button click and hover sounds.
+
+## Optional Mini Game
+
+The selected work page includes a removable cozy mini game:
+
+```text
+src/components/CozyMiniGame.astro
+```
+
+To remove it, open `src/pages/work.astro` and delete or comment out:
+
+```astro
+<CozyMiniGame />
+```
+
+To reuse it somewhere else, import the component into another Astro page and place `<CozyMiniGame />` where you want it.
 
 ## Pages
 

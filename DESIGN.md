@@ -87,9 +87,9 @@ Each slot is a clickable work button:
 ```ts
 {
   title: "Project 01",
-  image: "/assets/work/work-strip-rpg.png",
+  image: "/assets/work/work-card-01.png",
   className: "slot-1",
-  objectPosition: "7% 14%"
+  objectPosition: "center"
 }
 ```
 
@@ -99,7 +99,7 @@ To use a buyer's own image:
 2. Change `image`.
 3. Adjust `objectPosition` until the crop looks right.
 
-The default file `work-strip-rpg.png` is one wide fantasy RPG strip. Each work slot crops a different section by changing `objectPosition`.
+The default files `work-card-01.png` through `work-card-07.png` are individual fantasy RPG-style card artworks. Replace those files or point each `image` value at a buyer's own portfolio artwork.
 
 Keep the `slot-1` through `slot-7` class names unless you are changing the layout.
 
@@ -193,7 +193,41 @@ public/assets/work/cd-player-nobg.mp4
 
 It links to the YouTube track in `src/pages/work.astro`.
 
-## 6. CSS Map
+## 6. Remove Or Reuse The Mini Game
+
+The cozy canvas game is intentionally isolated in:
+
+```text
+src/components/CozyMiniGame.astro
+```
+
+On the selected work page, it is included with one line:
+
+```astro
+<CozyMiniGame />
+```
+
+Remove or comment out that line in `src/pages/work.astro` to disable the game. To move it into another page, import the component and place the same tag there.
+
+Game assets live here:
+
+```text
+public/assets/work/cozy-room-pixel.png
+public/assets/work/chibi-sprite.png
+public/assets/work/room-plant-crop.png
+```
+
+Mini-game styling is in `styles.css`. Search for:
+
+```text
+cozy-game
+game-field
+cozy-canvas
+game-toast
+game-hud
+```
+
+## 7. CSS Map
 
 Most visual styling lives in:
 
@@ -210,9 +244,10 @@ Useful areas to search:
 .work-page
 .work-select
 .work-button
+.cozy-game
 ```
 
-## 7. Performance Notes
+## 8. Performance Notes
 
 For marketplace templates, compress videos before shipping.
 

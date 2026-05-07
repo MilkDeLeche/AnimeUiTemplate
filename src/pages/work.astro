@@ -1,4 +1,5 @@
 ---
+import CozyMiniGame from "../components/CozyMiniGame.astro";
 import { workProjects } from "../data/templateContent";
 import "../styles/global.css";
 ---
@@ -30,12 +31,14 @@ import "../styles/global.css";
         }
       </section>
 
+      <!-- Remove or move this one component to disable/reuse the mini-game. -->
+      <CozyMiniGame />
+
       <a
         class="music-dock"
         href="https://www.youtube.com/watch?v=yKoBrB2dSbw"
-        target="_blank"
-        rel="noreferrer"
         aria-label="Play music on YouTube"
+        data-youtube-id="yKoBrB2dSbw"
         data-sfx="music"
       >
         <video autoplay muted loop playsinline preload="metadata" aria-hidden="true">
@@ -43,6 +46,14 @@ import "../styles/global.css";
         </video>
         <span>Play Music</span>
       </a>
+
+      <div class="music-player" data-music-player hidden>
+        <iframe
+          title="YouTube music player"
+          allow="autoplay; encrypted-media; picture-in-picture"
+          allowfullscreen
+        ></iframe>
+      </div>
     </main>
 
     <script is:inline>
@@ -75,7 +86,7 @@ import "../styles/global.css";
         });
       });
 
-      document.querySelectorAll(".work-button, .work-back, .music-dock").forEach((button) => {
+      document.querySelectorAll(".work-button, .work-back, .music-dock, .cozy-game").forEach((button) => {
         const playHover = () => {
           const now = performance.now();
           if (now - lastHover < 70) return;
@@ -89,6 +100,23 @@ import "../styles/global.css";
 
       document.querySelectorAll(".work-button[href=\"#\"]").forEach((button) => {
         button.addEventListener("click", (event) => event.preventDefault());
+      });
+
+      const musicDock = document.querySelector(".music-dock");
+      const musicPlayer = document.querySelector("[data-music-player]");
+      const musicFrame = musicPlayer?.querySelector("iframe");
+
+      musicDock?.addEventListener("click", (event) => {
+        event.preventDefault();
+        const videoId = musicDock.dataset.youtubeId || "yKoBrB2dSbw";
+        const embedUrl = `https://www.youtube.com/embed/${videoId}?autoplay=1&loop=1&playlist=${videoId}&rel=0`;
+        if (musicFrame && musicFrame.src !== embedUrl) {
+          musicFrame.src = embedUrl;
+        }
+        musicPlayer?.removeAttribute("hidden");
+        musicDock.classList.add("is-playing");
+        const label = musicDock.querySelector("span");
+        if (label) label.textContent = "Now Playing";
       });
     </script>
   </body>
