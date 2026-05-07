@@ -19,11 +19,18 @@
   box-sizing: border-box;
 }
 
+html {
+  min-width: 320px;
+  min-height: 100%;
+  background: #020815;
+}
+
 body {
+  width: 100%;
   min-height: 100vh;
+  min-height: 100svh;
   margin: 0;
-  display: grid;
-  place-items: center;
+  overflow: hidden;
   overflow-x: hidden;
   background:
     radial-gradient(circle at 18% 0%, rgba(255, 224, 91, 0.22), transparent 26rem),
@@ -66,11 +73,13 @@ a {
   --ui-ring: rgba(109, 231, 255, 0.24);
   --ui-panel-a: rgba(255, 255, 255, 0.58);
   --ui-panel-b: rgba(207, 246, 255, 0.08);
-  width: min(100%, 1440px);
+  width: 100%;
   min-height: 100vh;
+  min-height: 100svh;
   display: grid;
   place-items: center;
-  padding: clamp(14px, 2vw, 32px);
+  padding: 0;
+  overflow: hidden;
 }
 
 .hero-shell[data-theme="neon"] {
@@ -302,12 +311,14 @@ a {
 
 .hero {
   position: relative;
-  width: min(100%, 1280px);
-  aspect-ratio: 16 / 9;
+  width: 100vw;
+  min-width: 320px;
+  height: 100vh;
+  height: 100svh;
   min-height: 560px;
   overflow: hidden;
-  border: 1px solid rgba(255, 255, 255, 0.38);
-  border-radius: 8px;
+  border: 0;
+  border-radius: 0;
   box-shadow: 0 28px 90px rgba(3, 19, 40, 0.46);
   isolation: isolate;
 }
@@ -368,10 +379,10 @@ a {
 
 .top-hud {
   position: absolute;
-  inset: 14px 18px auto 18px;
+  inset: clamp(10px, 1.6vw, 22px) clamp(12px, 1.8vw, 26px) auto clamp(12px, 1.8vw, 26px);
   display: grid;
   grid-template-columns: auto 1fr auto auto;
-  gap: 14px;
+  gap: clamp(8px, 1.1vw, 14px);
   align-items: start;
   z-index: 5;
 }
@@ -687,9 +698,9 @@ a {
 
 .menu-cluster {
   position: absolute;
-  right: clamp(22px, 5vw, 76px);
-  top: 122px;
-  width: min(48vw, 580px);
+  right: clamp(18px, 5vw, 86px);
+  top: clamp(104px, 12.4vh, 150px);
+  width: min(48vw, 640px);
   z-index: 4;
   transform: rotate(-2deg);
 }
@@ -708,8 +719,8 @@ a {
 .panel-grid {
   display: grid;
   grid-template-columns: 0.86fr 1fr 1.12fr;
-  grid-template-rows: 118px 132px 138px;
-  gap: 10px;
+  grid-template-rows: clamp(96px, 12.6vh, 132px) clamp(104px, 14vh, 146px) clamp(110px, 14.6vh, 156px);
+  gap: clamp(7px, 0.9vw, 12px);
 }
 
 .menu-card {
@@ -851,7 +862,7 @@ a {
 .cta-panel {
   position: absolute;
   right: clamp(26px, 5vw, 86px);
-  bottom: 34px;
+  bottom: clamp(20px, 3.4vh, 42px);
   z-index: 5;
   display: grid;
   grid-template-columns: auto auto;
@@ -869,7 +880,7 @@ a {
 .theme-switcher {
   position: absolute;
   left: clamp(20px, 4vw, 58px);
-  bottom: 34px;
+  bottom: clamp(20px, 3.4vh, 42px);
   z-index: 6;
   display: flex;
   gap: 10px;
@@ -936,6 +947,7 @@ a {
   position: relative;
   width: 100%;
   min-height: 100vh;
+  min-height: 100svh;
   overflow: hidden;
   padding: 0;
   background: #02040d;
@@ -1014,9 +1026,9 @@ a {
 .work-select {
   position: relative;
   z-index: 2;
-  width: min(78vw, 1480px);
-  height: clamp(180px, 19vw, 320px);
-  margin: clamp(18px, 2.6vw, 44px) auto 0;
+  width: min(92vw, 1580px);
+  height: clamp(160px, 17.8vw, 320px);
+  margin: clamp(14px, 2.4vh, 34px) auto 0;
   min-height: 0;
 }
 
@@ -1113,11 +1125,11 @@ a {
   --growth-fill: 20%;
   position: fixed;
   left: 50%;
-  bottom: clamp(156px, 17vh, 220px);
+  bottom: clamp(132px, 16vh, 210px);
   z-index: 3;
-  width: min(62vw, 760px);
-  min-width: 520px;
-  height: clamp(220px, 21vw, 330px);
+  width: min(60vw, 860px);
+  min-width: min(520px, 92vw);
+  height: clamp(210px, 24vh, 330px);
   padding: 7px;
   border: 4px solid #331824;
   border-radius: 8px;
@@ -1634,8 +1646,7 @@ a {
 
 @media (max-width: 980px) {
   .hero {
-    min-height: 760px;
-    aspect-ratio: auto;
+    min-height: 100svh;
   }
 
   .hero-art {
@@ -1659,12 +1670,12 @@ a {
   .menu-cluster {
     right: 18px;
     top: auto;
-    bottom: 126px;
-    width: min(74vw, 560px);
+    bottom: clamp(108px, 15vh, 146px);
+    width: min(74vw, 600px);
   }
 
   .panel-grid {
-    grid-template-rows: 96px 104px 112px;
+    grid-template-rows: clamp(88px, 12vh, 104px) clamp(92px, 13vh, 112px) clamp(98px, 14vh, 120px);
   }
 
   .menu-card {
@@ -1677,8 +1688,8 @@ a {
   }
 
   .work-select {
-    width: min(92vw, 1180px);
-    height: clamp(150px, 20vw, 240px);
+    width: min(96vw, 1180px);
+    height: clamp(138px, 21vw, 240px);
     min-height: 0;
   }
 
@@ -1691,10 +1702,10 @@ a {
   }
 
   .cozy-game {
-    bottom: 160px;
-    width: min(76vw, 560px);
-    min-width: 360px;
-    height: 228px;
+    bottom: clamp(132px, 16vh, 168px);
+    width: min(78vw, 620px);
+    min-width: min(360px, 92vw);
+    height: clamp(190px, 24vh, 238px);
   }
 
   .music-dock {
@@ -1715,7 +1726,8 @@ a {
 
   .hero {
     width: 100%;
-    min-height: 100vh;
+    height: 100svh;
+    min-height: 100svh;
     border: 0;
     border-radius: 0;
   }
@@ -1749,7 +1761,7 @@ a {
   .menu-cluster {
     left: 12px;
     right: 10px;
-    bottom: 112px;
+    bottom: clamp(104px, 17vh, 126px);
     width: auto;
   }
 
@@ -1760,7 +1772,7 @@ a {
 
   .panel-grid {
     grid-template-columns: 1fr 1fr;
-    grid-template-rows: repeat(3, 96px);
+    grid-template-rows: repeat(3, clamp(82px, 13.5vh, 96px));
     gap: 7px;
   }
 
@@ -1814,7 +1826,7 @@ a {
 
   .work-page {
     padding: 0;
-    overflow-x: auto;
+    overflow: hidden;
   }
 
   .work-header {
@@ -1829,10 +1841,10 @@ a {
   }
 
   .work-select {
-    width: 980px;
-    height: 205px;
+    width: min(96vw, 620px);
+    height: clamp(98px, 27vw, 168px);
     min-height: 0;
-    margin: 16px 0 0 12px;
+    margin: 12px auto 0;
   }
 
   .work-button {
@@ -1842,17 +1854,17 @@ a {
   }
 
   .cozy-game {
-    left: 12px;
-    bottom: 178px;
-    width: min(92vw, 360px);
+    left: 50%;
+    bottom: clamp(132px, 18vh, 176px);
+    width: min(94vw, 430px);
     min-width: 0;
-    height: 184px;
-    transform: none;
+    height: clamp(164px, 28vh, 204px);
+    transform: translateX(-50%);
   }
 
   .music-dock {
-    bottom: 64px;
-    width: 132px;
+    bottom: 44px;
+    width: clamp(112px, 30vw, 132px);
   }
 
   .music-dock span {
@@ -1861,10 +1873,10 @@ a {
   }
 
   .music-player {
-    left: 148px;
-    right: auto;
-    bottom: 76px;
-    width: 184px;
+    left: auto;
+    right: 10px;
+    bottom: 72px;
+    width: min(45vw, 184px);
     min-width: 0;
   }
 }
