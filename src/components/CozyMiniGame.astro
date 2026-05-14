@@ -19,8 +19,9 @@
     const context = canvas?.getContext("2d");
     if (!game || !canvas || !context) return;
 
+    const clickSoundUrl = "/assets/sounds/ui-click-crisp.m4a?v=3";
     const clickSounds = Array.from({ length: 3 }, () => {
-      const sound = new Audio("/assets/sounds/ui-click-crisp.wav");
+      const sound = new Audio(clickSoundUrl);
       sound.preload = "auto";
       sound.volume = 0.46;
       return sound;

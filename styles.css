@@ -309,6 +309,166 @@ a {
   animation-delay: 220ms;
 }
 
+.work-route-transition {
+  --kitty-pink: #ffd6ed;
+  --kitty-blue: #79e7ff;
+  --kitty-ink: #091629;
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: grid;
+  place-items: center;
+  overflow: hidden;
+  pointer-events: none;
+  visibility: hidden;
+  background:
+    radial-gradient(circle at 18% 22%, rgba(255, 255, 255, 0.22) 0 2px, transparent 3px) 0 0 / 18px 18px,
+    linear-gradient(135deg, #071b38 0 42%, #1686d4 42% 62%, #ffd6ed 62% 100%);
+  opacity: 0;
+}
+
+.work-route-transition::before,
+.work-route-transition::after {
+  content: "";
+  position: absolute;
+  inset: -22%;
+  pointer-events: none;
+}
+
+.work-route-transition::before {
+  background:
+    radial-gradient(circle at 18px 16px, var(--kitty-pink) 0 9px, transparent 10px),
+    radial-gradient(circle at 32px 16px, var(--kitty-pink) 0 9px, transparent 10px),
+    radial-gradient(circle at 25px 28px, var(--kitty-pink) 0 13px, transparent 14px),
+    radial-gradient(circle at 20px 42px, var(--kitty-pink) 0 5px, transparent 6px),
+    radial-gradient(circle at 31px 42px, var(--kitty-pink) 0 5px, transparent 6px);
+  background-size: 86px 72px;
+  background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+  opacity: 0.38;
+  transform: rotate(-8deg) translateY(18%);
+}
+
+.work-route-transition::after {
+  background:
+    linear-gradient(118deg, transparent 0 31%, rgba(255, 255, 255, 0.96) 31% 35%, transparent 35% 100%),
+    linear-gradient(118deg, transparent 0 49%, color-mix(in srgb, var(--kitty-blue) 86%, transparent) 49% 54%, transparent 54% 100%),
+    linear-gradient(118deg, transparent 0 66%, rgba(255, 214, 237, 0.92) 66% 70%, transparent 70% 100%);
+  transform: translateX(-90%) rotate(-7deg);
+}
+
+.kitty-pattern {
+  position: absolute;
+  width: 44vmax;
+  height: 150vmax;
+  min-width: 360px;
+  background:
+    radial-gradient(circle at 22px 18px, white 0 9px, transparent 10px),
+    radial-gradient(circle at 42px 18px, white 0 9px, transparent 10px),
+    radial-gradient(circle at 32px 34px, white 0 14px, transparent 15px),
+    linear-gradient(135deg, transparent 0 46%, rgba(9, 22, 41, 0.28) 46% 54%, transparent 54% 100%);
+  background-size: 92px 78px, 92px 78px, 92px 78px, 34px 34px;
+  box-shadow: 0 0 0 5px rgba(255, 255, 255, 0.1);
+  transform: translateX(-120%) rotate(22deg);
+}
+
+.kitty-pattern-a {
+  left: -16vmax;
+  background-color: #ff8fc1;
+}
+
+.kitty-pattern-b {
+  right: -18vmax;
+  background-color: #79e7ff;
+  transform: translateX(120%) rotate(22deg);
+}
+
+.kitty-card {
+  position: relative;
+  z-index: 4;
+  width: min(72vw, 520px);
+  padding: 20px 26px 24px;
+  border: 6px solid var(--kitty-ink);
+  background:
+    radial-gradient(circle at 22px 18px, rgba(255, 143, 193, 0.28) 0 8px, transparent 9px) 0 0 / 44px 38px,
+    #fff7fc;
+  color: var(--kitty-ink);
+  box-shadow:
+    12px 12px 0 #79e7ff,
+    20px 20px 0 rgba(3, 8, 18, 0.86);
+  transform: rotate(-4deg) scale(0.86);
+  opacity: 0;
+}
+
+.kitty-card::before,
+.kitty-card::after {
+  content: "";
+  position: absolute;
+  top: -30px;
+  width: 54px;
+  height: 54px;
+  background: #fff7fc;
+  border: 6px solid var(--kitty-ink);
+  border-bottom: 0;
+  transform: rotate(45deg);
+}
+
+.kitty-card::before {
+  left: 42px;
+}
+
+.kitty-card::after {
+  right: 42px;
+}
+
+.kitty-card span,
+.kitty-card strong {
+  position: relative;
+  z-index: 2;
+  display: block;
+  font-family: Impact, "Arial Narrow", Arial, sans-serif;
+  letter-spacing: 0;
+  line-height: 0.86;
+  text-transform: uppercase;
+}
+
+.kitty-card span {
+  font-size: clamp(22px, 3vw, 40px);
+  color: #1686d4;
+}
+
+.kitty-card strong {
+  margin-top: 4px;
+  font-size: clamp(48px, 8vw, 92px);
+  color: #ff5aa8;
+  text-shadow: 3px 3px 0 white;
+}
+
+.work-route-transition.is-active {
+  visibility: visible;
+  opacity: 1;
+  animation: kitty-transition-shell 980ms cubic-bezier(0.16, 0.86, 0.24, 1) both;
+}
+
+.work-route-transition.is-active::before {
+  animation: kitty-paws 980ms linear both;
+}
+
+.work-route-transition.is-active::after {
+  animation: kitty-streak 820ms 90ms cubic-bezier(0.16, 0.86, 0.24, 1) both;
+}
+
+.work-route-transition.is-active .kitty-pattern-a {
+  animation: kitty-panel-left 780ms cubic-bezier(0.16, 0.86, 0.24, 1) both;
+}
+
+.work-route-transition.is-active .kitty-pattern-b {
+  animation: kitty-panel-right 840ms 80ms cubic-bezier(0.16, 0.86, 0.24, 1) both;
+}
+
+.work-route-transition.is-active .kitty-card {
+  animation: kitty-card-pop 520ms 320ms cubic-bezier(0.16, 0.86, 0.24, 1) both;
+}
+
 .hero {
   position: relative;
   width: 100vw;
@@ -1626,6 +1786,76 @@ a {
   100% {
     opacity: 0;
     transform: translate(220vw, -50%) rotate(24deg) scaleY(0.72);
+  }
+}
+
+@keyframes kitty-transition-shell {
+  0% {
+    opacity: 0;
+  }
+
+  12%,
+  100% {
+    opacity: 1;
+  }
+}
+
+@keyframes kitty-paws {
+  from {
+    background-position: 0 0, 0 0, 0 0, 0 0, 0 0;
+    transform: rotate(-8deg) translateY(18%);
+  }
+
+  to {
+    background-position: 70px -42px, 70px -42px, 70px -42px, 70px -42px, 70px -42px;
+    transform: rotate(-8deg) translateY(-3%);
+  }
+}
+
+@keyframes kitty-streak {
+  from {
+    transform: translateX(-90%) rotate(-7deg);
+  }
+
+  to {
+    transform: translateX(42%) rotate(-7deg);
+  }
+}
+
+@keyframes kitty-panel-left {
+  from {
+    transform: translateX(-120%) rotate(22deg);
+  }
+
+  to {
+    transform: translateX(0) rotate(22deg);
+  }
+}
+
+@keyframes kitty-panel-right {
+  from {
+    transform: translateX(120%) rotate(22deg);
+  }
+
+  to {
+    transform: translateX(0) rotate(22deg);
+  }
+}
+
+@keyframes kitty-card-pop {
+  from {
+    opacity: 0;
+    transform: rotate(-10deg) translateY(22px) scale(0.76);
+  }
+
+  72% {
+    opacity: 1;
+    transform: rotate(-2deg) translateY(-6px) scale(1.04);
+  }
+
+  to {
+    opacity: 1;
+    transform: rotate(-4deg) translateY(0) scale(1);
   }
 }
 

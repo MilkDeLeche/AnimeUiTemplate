@@ -177,11 +177,11 @@ public/assets/sounds/
 Recommended files:
 
 ```text
-ui-click-crisp.wav
+ui-click-crisp.m4a
 ui-hover-anime.wav
 ```
 
-Main-page clicks and selected-work clicks use `ui-click-crisp.wav`.
+Main-page clicks and selected-work clicks use `ui-click-crisp.m4a`.
 
 Selected-work hover states use `ui-hover-anime.wav`.
 

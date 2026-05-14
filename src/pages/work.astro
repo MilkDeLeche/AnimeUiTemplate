@@ -9,7 +9,32 @@ import "../styles/global.css";
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Selected Work</title>
+    <title>Selected Work | MODO Design Agency</title>
+    <meta
+      name="description"
+      content="Selected web design, graphic design, and web development work from MODO, a design agency and creative studio."
+    />
+    <meta
+      name="keywords"
+      content="MODO selected work, design agency portfolio, web designer portfolio, graphic designer portfolio, web developer portfolio"
+    />
+    <meta name="author" content="MODO" />
+    <meta property="og:title" content="Selected Work | MODO Design Agency" />
+    <meta
+      property="og:description"
+      content="Explore selected work from MODO across web design, graphic design, and web development."
+    />
+    <meta property="og:type" content="website" />
+    <meta property="og:image" content="/favicon.png" />
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:title" content="Selected Work | MODO Design Agency" />
+    <meta
+      name="twitter:description"
+      content="Selected work from MODO, a design agency for web design, graphic design, and web development."
+    />
+    <meta name="twitter:image" content="/favicon.png" />
+    <link rel="icon" type="image/png" href="/favicon.png" />
+    <link rel="apple-touch-icon" href="/favicon.png" />
   </head>
   <body>
     <main class="work-page">
@@ -57,8 +82,9 @@ import "../styles/global.css";
     </main>
 
     <script is:inline>
+      const clickSoundUrl = "/assets/sounds/ui-click-crisp.m4a?v=3";
       const clickSoundPool = Array.from({ length: 4 }, () => {
-        const sound = new Audio("/assets/sounds/ui-click-crisp.wav");
+        const sound = new Audio(clickSoundUrl);
         sound.preload = "auto";
         sound.volume = 0.58;
         return sound;
